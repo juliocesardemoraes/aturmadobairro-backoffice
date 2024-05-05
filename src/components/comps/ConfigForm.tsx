@@ -44,7 +44,7 @@ export function ConfigForm({
       redirect: "follow",
     };
 
-    fetch("http://localhost:5000/config", requestOptions)
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_ROUTE}/config`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
         console.log("res", result[0]);

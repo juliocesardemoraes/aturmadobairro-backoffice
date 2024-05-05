@@ -27,7 +27,7 @@ export default function Home() {
       redirect: "follow",
     };
 
-    fetch("http://localhost:5000/users/auth", requestOptions)
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_ROUTE}/users/auth`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
         console.log(`res`, result);

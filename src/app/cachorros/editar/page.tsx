@@ -45,7 +45,7 @@ export default function Page() {
       redirect: "follow",
     };
 
-    fetch("http://localhost:5000/pets", requestOptions)
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_ROUTE}/pets`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
         if (result?.status === "ok") {
@@ -68,7 +68,10 @@ export default function Page() {
     const idToGet = searchParams.get("id") ?? "1";
     setId(idToGet);
 
-    fetch(`http://localhost:5000/pets?id=${idToGet}`, requestOptions)
+    fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_ROUTE}/pets?id=${idToGet}`,
+      requestOptions
+    )
       .then((response) => response.json())
       .then((result) => {
         console.log("r", result);

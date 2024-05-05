@@ -42,7 +42,7 @@ export default function Page() {
       redirect: "follow",
     };
 
-    fetch("http://localhost:5000/config", requestOptions)
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_ROUTE}/config`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
         console.log("RES", result);

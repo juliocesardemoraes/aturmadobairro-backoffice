@@ -16,7 +16,7 @@ export default function Page() {
       redirect: "follow",
     };
 
-    fetch("http://localhost:5000/pets", requestOptions)
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_ROUTE}/pets`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
         console.log("r", result);
@@ -31,7 +31,10 @@ export default function Page() {
       redirect: "follow",
     };
 
-    fetch(`http://localhost:5000/pets?id=${id}`, requestOptions)
+    fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_ROUTE}/pets?id=${id}`,
+      requestOptions
+    )
       .then((response) => response.json())
       .then((result) => {
         console.log("r", result);
