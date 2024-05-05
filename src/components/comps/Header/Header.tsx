@@ -17,7 +17,7 @@ export default function Header() {
             <p>Voluntários</p>
           </Link>
           <Link href={"/cachorros"}>
-            <p>Cachorros</p>
+            <p>Pets</p>
           </Link>
         </div>
       </nav>

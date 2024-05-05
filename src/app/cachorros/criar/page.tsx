@@ -5,57 +5,60 @@ import Header from "@/components/comps/Header/Header";
 import React from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { PetsForm } from "@/components/comps/PetsForm";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
-  const notify = () => toast.success("Configurações alteradas com sucesso!");
+  const notify = () => toast.success("Pet criado com sucesso!");
   const notifyError = () =>
     toast.error("Credenciais incorretas! Tente novamente");
+  const router = useRouter();
 
   const onSubmit = (
     firstValue: any,
     secondValue: any,
     thirdValue: any,
     fourthValue: any,
-    fifthValue: any
+    fifthValue: any,
+    fileImage: any
   ) => {
-    console.log(`Tel`, firstValue);
-    console.log(`Rede`, secondValue);
-    console.log(`Email`, thirdValue);
-    console.log(`Pix`, fourthValue);
-    console.log(`Conta`, fifthValue);
+    console.log(`Nome`, firstValue);
+    console.log(`Idade`, secondValue);
+    console.log(`Porte`, thirdValue);
+    console.log(`Data de entrada`, fourthValue);
+    console.log(`Características`, fifthValue);
+    console.log(`fileImage`, fileImage);
 
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     const raw = JSON.stringify({
-      phone: firstValue,
-      social: secondValue,
-      email: thirdValue,
-      pix: fourthValue,
-      bankAccount: fifthValue,
+      name: firstValue,
+      age: secondValue,
+      porte: thirdValue,
+      entryDate: fourthValue,
+      characteristics: fifthValue,
+      photo: fileImage,
     });
 
     const requestOptions: any = {
-      method: "PUT",
+      method: "POST",
       headers: myHeaders,
       body: raw,
       redirect: "follow",
     };
 
-    fetch("http://localhost:5000/config", requestOptions)
+    fetch("http://localhost:5000/pets", requestOptions)
       .then((response) => response.json())
       .then((result) => {
-        console.log("RES", result);
         if (result?.status === "ok") {
           notify();
-        } else {
-          notifyError();
+          setTimeout(() => {
+            router.push("/cachorros");
+          }, 1500);
         }
       })
-      .catch((error) => {
-        console.error(error);
-        notifyError();
-      });
+      .catch((error) => console.error(error));
   };
   return (
     <main className="flex min-h-screen flex-col items-center  pl-24 pt-5 pr-24">
@@ -67,12 +70,18 @@ export default function Page() {
         width={150}
         height={150}
       ></Image>
-      <h1 className="text-white text-2xl mb-4">Configurações</h1>
-      <ConfigForm
-        title="Editar informações"
-        description={"Faça as edições da turma do bairro abaixo."}
-        inputs={["Telefone", "Rede social", "Email", "Pix", "Conta Bancaria"]}
-        confirm="Salvar"
+      <h1 className="text-white text-2xl mb-4">Adicionar Pet</h1>
+      <PetsForm
+        title="Adicionar Pet"
+        description={"Coloque as informações do pet a ser adicionado"}
+        inputs={[
+          "Nome",
+          "Idade",
+          "Porte",
+          "Data de entrada",
+          "Caracteristicas",
+        ]}
+        confirm="Adicionar"
         cancel={null}
         redirecionarCancel="/"
         onSubmit={(
@@ -80,17 +89,20 @@ export default function Page() {
           secondValue: any,
           thirdValue: any,
           fourthValue: any,
-          fifthValue: any
+          fifthValue: any,
+          fileImage: any
         ) => {
           onSubmit(
             firstValue,
             secondValue,
             thirdValue,
             fourthValue,
-            fifthValue
+            fifthValue,
+            fileImage
           );
         }}
-      ></ConfigForm>
+        uploadImage={true}
+      ></PetsForm>
       <ToastContainer />
     </main>
   );

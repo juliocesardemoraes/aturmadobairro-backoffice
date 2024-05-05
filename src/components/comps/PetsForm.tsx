@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/select";
 import Link from "next/link";
 
-export function ConfigForm({
+export function PetsForm({
   title,
   description,
   inputs = [],
@@ -30,6 +30,7 @@ export function ConfigForm({
   redirecionarCancel,
   onSubmit = () => {},
   uploadImage = null,
+  previousValues = null,
 }: any) {
   const [firstValue, setFirstValue] = React.useState("");
   const [secondValue, setSecondValue] = React.useState("");
@@ -39,38 +40,30 @@ export function ConfigForm({
   const [fileImages, setFileImages] = React.useState<any>("");
 
   React.useEffect(() => {
-    const requestOptions: any = {
-      method: "GET",
-      redirect: "follow",
-    };
-
-    fetch("http://localhost:5000/config", requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        console.log("res", result[0]);
-        setFirstValue(result[0].phone);
-        setSecondValue(result[0].social);
-        setThirdValue(result[0].email);
-        setFourthValue(result[0].pix);
-        setFifthValue(result[0].bankAccount);
-      })
-      .catch((error) => console.error(error));
-  }, []);
+    if (previousValues) {
+      setFirstValue(previousValues.name);
+      setSecondValue(previousValues.age);
+      setThirdValue(previousValues.porte);
+      setFourthValue(previousValues.entryDate);
+      setFifthValue(previousValues.characteristics);
+      setFileImages(previousValues.photo);
+    }
+  }, [previousValues]);
 
   const translate: any = {
-    Telefone: firstValue,
-    ["Rede social"]: secondValue,
-    Email: thirdValue,
-    Pix: fourthValue,
-    ["Conta Bancaria"]: fifthValue,
+    Nome: firstValue,
+    Idade: secondValue,
+    Porte: thirdValue,
+    ["Data de entrada"]: fourthValue,
+    Caracteristicas: fifthValue,
   };
 
   const translateFuncs: any = {
-    Telefone: setFirstValue,
-    ["Rede social"]: setSecondValue,
-    Email: setThirdValue,
-    Pix: setFourthValue,
-    ["Conta Bancaria"]: setFifthValue,
+    Nome: setFirstValue,
+    Idade: setSecondValue,
+    Porte: setThirdValue,
+    ["Data de entrada"]: setFourthValue,
+    Caracteristicas: setFifthValue,
   };
 
   const photosSelected = (e: any) => {
@@ -140,7 +133,6 @@ export function ConfigForm({
                   onChange={async (e) => {
                     photosSelected(e);
                   }}
-                  required
                 ></input>
               </div>
               <Image
