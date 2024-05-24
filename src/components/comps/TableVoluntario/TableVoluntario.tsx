@@ -58,16 +58,12 @@ const invoices = [
         headers={["age", "city", "freeHours", "name"]}
 */
 const formatDate = (data: any) => {
+  console.log("DATA", data.toLocaleString());
+
   let objectDate = new Date(data);
-
-  let day = objectDate.getDate();
-  console.log(day); // 23
-
-  let month = objectDate.getMonth();
-  console.log(month + 1); // 8
-
-  let year = objectDate.getFullYear();
-  console.log(year); // 2022
+  const day = objectDate.getUTCDate().toString().padStart(2, "0");
+  const month = (objectDate.getUTCMonth() + 1).toString().padStart(2, "0"); // Os meses são de 0 a 11, então adicionamos 1
+  const year = objectDate.getUTCFullYear();
 
   return `${day}-${month}-${year}`;
 };

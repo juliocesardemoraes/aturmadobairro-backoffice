@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Link from "next/link";
+import Loading from "../loader/Loading";
 
 export function PetsForm({
   title,
@@ -38,6 +39,7 @@ export function PetsForm({
   const [fourthValue, setFourthValue] = React.useState("");
   const [fifthValue, setFifthValue] = React.useState("");
   const [fileImages, setFileImages] = React.useState<any>("");
+  const [loading, setLoading] = React.useState<any>(false);
 
   React.useEffect(() => {
     if (previousValues) {
@@ -81,82 +83,91 @@ export function PetsForm({
 
   return (
     <Card className="w-[350px]">
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          onSubmit(
-            firstValue,
-            secondValue,
-            thirdValue,
-            fourthValue,
-            fifthValue,
-            fileImages
-          );
-        }}
-      >
-        <CardHeader>
-          <CardTitle>{title}</CardTitle>
-          <CardDescription>{description}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid w-full items-center gap-4">
-            {inputs.length > 0 &&
-              inputs.map((item: any) => {
-                return (
-                  <div className="flex flex-col space-y-1.5" key={item}>
-                    <Label htmlFor={item}>{item}</Label>
-                    <Input
-                      id={item}
-                      placeholder={item}
-                      value={translate[`${item}`]}
-                      onChange={(e) => {
-                        translateFuncs[item](e?.target?.value);
-                      }}
-                    />
-                  </div>
-                );
-              })}
-          </div>
-          {uploadImage === true && (
-            <>
-              <Image
-                src={"/icons/uploadblack.svg"}
-                width={16}
-                height={16}
-                alt="back icon"
-              ></Image>
-              <label htmlFor="fileInput">Enviar Fotos</label>
-              <div className="input__file">
-                <input
-                  type="file"
-                  id="fileInput"
-                  onChange={async (e) => {
-                    photosSelected(e);
-                  }}
-                ></input>
+      {loading ? (
+        <div className="flex w-100 justify-center">
+          <Loading></Loading>
+        </div>
+      ) : (
+        <>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              setLoading(true);
+              onSubmit(
+                firstValue,
+                secondValue,
+                thirdValue,
+                fourthValue,
+                fifthValue,
+                fileImages
+              );
+            }}
+          >
+            <CardHeader>
+              <CardTitle>{title}</CardTitle>
+              <CardDescription>{description}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid w-full items-center gap-4">
+                {inputs.length > 0 &&
+                  inputs.map((item: any) => {
+                    return (
+                      <div className="flex flex-col space-y-1.5" key={item}>
+                        <Label htmlFor={item}>{item}</Label>
+                        <Input
+                          id={item}
+                          placeholder={item}
+                          value={translate[`${item}`]}
+                          onChange={(e) => {
+                            translateFuncs[item](e?.target?.value);
+                          }}
+                        />
+                      </div>
+                    );
+                  })}
               </div>
-              <Image
-                src={fileImages}
-                width={180}
-                height={180}
-                alt="imageSelected"
-                quality={100}
-              ></Image>
-            </>
-          )}
-        </CardContent>
-        <CardFooter className="flex flex-end justify-end">
-          {cancel && (
-            <>
-              <Link href={`/${redirecionarCancel}`}>
-                <Button variant="outline">{cancel}</Button>
-              </Link>
-            </>
-          )}
+              {uploadImage === true && (
+                <>
+                  <Image
+                    src={"/icons/uploadblack.svg"}
+                    width={16}
+                    height={16}
+                    alt="back icon"
+                  ></Image>
+                  <label htmlFor="fileInput">Enviar Fotos</label>
+                  <div className="input__file">
+                    <input
+                      type="file"
+                      id="fileInput"
+                      onChange={async (e) => {
+                        photosSelected(e);
+                      }}
+                    ></input>
+                  </div>
+                  <Image
+                    src={fileImages}
+                    width={180}
+                    height={180}
+                    alt="imageSelected"
+                    quality={100}
+                  ></Image>
+                </>
+              )}
+            </CardContent>
+            <CardFooter className="flex flex-end justify-end">
+              {cancel && (
+                <>
+                  <Link href={`/${redirecionarCancel}`}>
+                    <Button variant="outline">{cancel}</Button>
+                  </Link>
+                </>
+              )}
 
-          <Button>{confirm}</Button>
-        </CardFooter>
-      </form>
+              <Button>{confirm}</Button>
+            </CardFooter>
+          </form>
+        </>
+      )}
     </Card>
   );
 }
