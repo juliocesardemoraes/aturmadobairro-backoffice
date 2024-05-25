@@ -6,8 +6,11 @@ import Image from "next/image";
 
 export default function Page() {
   const [voluntarios, setVoluntarios] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
+
     const requestOptions: any = {
       method: "GET",
       redirect: "follow",
@@ -19,7 +22,10 @@ export default function Page() {
         console.log("r", result);
         setVoluntarios(result);
       })
-      .catch((error) => console.error(error));
+      .catch((error) => console.error(error))
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   return (
@@ -40,6 +46,7 @@ export default function Page() {
       <TableVoluntario
         voluntarios={voluntarios}
         headers={["age", "city", "freeHours", "name"]}
+        loading={loading}
       ></TableVoluntario>
     </main>
   );

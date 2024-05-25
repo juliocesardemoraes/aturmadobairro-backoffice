@@ -9,8 +9,10 @@ import Link from "next/link";
 
 export default function Page() {
   const [voluntarios, setVoluntarios] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
+  const getPets = () => {
+    setLoading(true);
     const requestOptions: any = {
       method: "GET",
       redirect: "follow",
@@ -22,10 +24,19 @@ export default function Page() {
         console.log("r", result);
         setVoluntarios(result);
       })
-      .catch((error) => console.error(error));
+      .catch((error) => console.error(error))
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    getPets();
   }, []);
 
   const deleteFunc = (id: any) => {
+    setLoading(true);
+
     const requestOptions: any = {
       method: "DELETE",
       redirect: "follow",
@@ -38,9 +49,12 @@ export default function Page() {
       .then((response) => response.json())
       .then((result) => {
         console.log("r", result);
-        setVoluntarios(result);
+        getPets();
       })
-      .catch((error) => console.error(error));
+      .catch((error) => console.error(error))
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -62,6 +76,7 @@ export default function Page() {
         voluntarios={voluntarios}
         headers={["age", "city", "freeHours", "name"]}
         deleteFunc={deleteFunc}
+        loading={loading}
       ></TablePets>
       <div className="w-full mt-4 flex justify-end">
         <Link href={"/cachorros/criar"}>

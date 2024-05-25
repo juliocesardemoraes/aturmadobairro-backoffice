@@ -111,6 +111,7 @@ export function PetsForm({
               <div className="grid w-full items-center gap-4">
                 {inputs.length > 0 &&
                   inputs.map((item: any) => {
+                    console.log("ITEM", item);
                     return (
                       <div className="flex flex-col space-y-1.5" key={item}>
                         <Label htmlFor={item}>{item}</Label>
@@ -118,6 +119,7 @@ export function PetsForm({
                           id={item}
                           placeholder={item}
                           value={translate[`${item}`]}
+                          type={item === "Data de entrada" ? "text" : "text"}
                           onChange={(e) => {
                             translateFuncs[item](e?.target?.value);
                           }}

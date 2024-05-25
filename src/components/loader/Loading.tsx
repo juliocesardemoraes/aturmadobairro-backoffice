@@ -1,8 +1,8 @@
 import React from "react";
 
-export default function Loading() {
+export default function Loading({ color }: any) {
   return (
-    <div className="lds-ring">
+    <div className={`lds-ring ${color}`}>
       <div></div>
       <div></div>
       <div></div>

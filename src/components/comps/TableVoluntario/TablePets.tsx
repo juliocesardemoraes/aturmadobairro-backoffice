@@ -1,3 +1,4 @@
+import Loading from "@/components/loader/Loading";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -13,20 +14,19 @@ import Link from "next/link";
 
 const formatDate = (data: any) => {
   let objectDate = new Date(data);
-
-  let day = objectDate.getDate();
-  console.log(day); // 23
-
-  let month = objectDate.getMonth();
-  console.log(month + 1); // 8
-
-  let year = objectDate.getFullYear();
-  console.log(year); // 2022
+  const day = objectDate.getUTCDate().toString().padStart(2, "0");
+  const month = (objectDate.getUTCMonth() + 1).toString().padStart(2, "0"); // Os meses são de 0 a 11, então adicionamos 1
+  const year = objectDate.getUTCFullYear();
 
   return `${day}-${month}-${year}`;
 };
 
-export default function TablePets({ voluntarios, headers, deleteFunc }: any) {
+export default function TablePets({
+  voluntarios,
+  headers,
+  deleteFunc,
+  loading,
+}: any) {
   return (
     <Table className="font-white text-white">
       <TableHeader>
@@ -41,30 +41,40 @@ export default function TablePets({ voluntarios, headers, deleteFunc }: any) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {voluntarios?.length > 0 &&
-          voluntarios?.map((voluntario: any) => (
-            <TableRow key={voluntario.id}>
-              <TableCell>{voluntario.name}</TableCell>
-              <TableCell className="font-medium">{voluntario.age}</TableCell>
-              <TableCell>{voluntario.porte}</TableCell>
-              <TableCell>{voluntario.characteristics}</TableCell>
-              <TableCell>{formatDate(voluntario.entryDate)}</TableCell>
-              <TableCell>
-                <Link href={`/cachorros/editar?id=${voluntario.id}`}>
-                  <Button>Editar</Button>
-                </Link>
-              </TableCell>
-              <TableCell>
-                <Button
-                  onClick={() => {
-                    deleteFunc(voluntario.id);
-                  }}
-                >
-                  Deletar
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
+        {loading === true ? (
+          <>
+            <Loading color={"white"}></Loading>
+          </>
+        ) : (
+          <>
+            {voluntarios?.length > 0 &&
+              voluntarios?.map((voluntario: any) => (
+                <TableRow key={voluntario.id}>
+                  <TableCell>{voluntario.name}</TableCell>
+                  <TableCell className="font-medium">
+                    {voluntario.age}
+                  </TableCell>
+                  <TableCell>{voluntario.porte}</TableCell>
+                  <TableCell>{voluntario.characteristics}</TableCell>
+                  <TableCell>{formatDate(voluntario.entryDate)}</TableCell>
+                  <TableCell>
+                    <Link href={`/cachorros/editar?id=${voluntario.id}`}>
+                      <Button>Editar</Button>
+                    </Link>
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      onClick={() => {
+                        deleteFunc(voluntario.id);
+                      }}
+                    >
+                      Deletar
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+          </>
+        )}
       </TableBody>
       <TableFooter className="bg-slate-900 w-full">
         <TableRow>

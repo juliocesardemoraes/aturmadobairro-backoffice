@@ -88,6 +88,10 @@ body {
   cursor: pointer;
 }
 
+.white {
+  color: #fff !important;
+}
+
 .lds-ring {
   /* change color here */
   color: #222;

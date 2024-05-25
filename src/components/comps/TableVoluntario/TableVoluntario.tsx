@@ -1,3 +1,4 @@
+import Loading from "@/components/loader/Loading";
 import {
   Table,
   TableBody,
@@ -9,57 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const invoices = [
-  {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
-];
-
-/*
-        headers={["age", "city", "freeHours", "name"]}
-*/
 const formatDate = (data: any) => {
-  console.log("DATA", data.toLocaleString());
-
   let objectDate = new Date(data);
   const day = objectDate.getUTCDate().toString().padStart(2, "0");
   const month = (objectDate.getUTCMonth() + 1).toString().padStart(2, "0"); // Os meses são de 0 a 11, então adicionamos 1
@@ -68,7 +19,11 @@ const formatDate = (data: any) => {
   return `${day}-${month}-${year}`;
 };
 
-export default function TableVoluntario({ voluntarios, headers }: any) {
+export default function TableVoluntario({
+  voluntarios,
+  headers,
+  loading,
+}: any) {
   return (
     <Table className="font-white text-white">
       <TableHeader>
@@ -80,16 +35,26 @@ export default function TableVoluntario({ voluntarios, headers }: any) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {voluntarios.map((voluntario: any) => (
-          <TableRow key={voluntario.id}>
-            <TableCell>{voluntario.name}</TableCell>
-            <TableCell className="font-medium">
-              {formatDate(voluntario.age)}
-            </TableCell>
-            <TableCell>{voluntario.city}</TableCell>
-            <TableCell className="text-right">{voluntario.freeHours}</TableCell>
-          </TableRow>
-        ))}
+        {loading === true ? (
+          <>
+            <Loading color={"white"}></Loading>
+          </>
+        ) : (
+          <>
+            {voluntarios.map((voluntario: any) => (
+              <TableRow key={voluntario.id}>
+                <TableCell>{voluntario.name}</TableCell>
+                <TableCell className="font-medium">
+                  {formatDate(voluntario.age)}
+                </TableCell>
+                <TableCell>{voluntario.city}</TableCell>
+                <TableCell className="text-right">
+                  {voluntario.freeHours}
+                </TableCell>
+              </TableRow>
+            ))}
+          </>
+        )}
       </TableBody>
       <TableFooter className="bg-slate-900">
         <TableRow>
