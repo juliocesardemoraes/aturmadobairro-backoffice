@@ -19,6 +19,9 @@ export default function Header() {
           <Link href={"/cachorros"}>
             <p>Pets</p>
           </Link>
+          <Link href={""}>
+            <p>Relatório de dados</p>
+          </Link>
         </div>
       </nav>
     </header>

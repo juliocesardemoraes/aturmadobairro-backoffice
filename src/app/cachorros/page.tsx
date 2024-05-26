@@ -74,7 +74,7 @@ export default function Page() {
       </div>
       <TablePets
         voluntarios={voluntarios}
-        headers={["age", "city", "freeHours", "name"]}
+        headers={["age", "city", "freeHours", "name", "wantToAdopt"]}
         deleteFunc={deleteFunc}
         loading={loading}
       ></TablePets>
